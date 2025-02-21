@@ -26,13 +26,13 @@
 </head>
 <body>
 
-    <h2>Pay ₹49 using Google Pay</h2>
+    <h2>hey Pay ₹49 using Google Pay</h2>
     <button class="btn" onclick="payWithGPay()">Pay with GPay</button>
 
     <script>
         function payWithGPay() {
             // Google Pay UPI Deep Link
-            const upiLink = "upi://pay?pa=nobee5143-1@okaysbi@upi&pn=CK PRAVEEN&mc=0000&tid=123456&tr=TXN12345&tn=Payment%20for%20Service&am=49&cu=INR";
+            const upiLink = "upi://pay?pa=nobee5143-1@oksbi@upi&pn=CK PRAVEEN&mc=0000&tid=123456&tr=TXN12345&tn=Payment%20for%20Service&am=49&cu=INR";
             window.location.href = upiLink;
         }
     </script>
