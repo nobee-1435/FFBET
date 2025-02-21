@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Pay Payment</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        .pay-button {
+            background-color: #4285F4;
+            color: white;
+            padding: 10px 20px;
+            font-size: 18px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Pay ₹49 with Google Pay</h1>
+    <button class="pay-button" onclick="payWithGPay()">Pay Now</button>
+
+    <script>
+        function payWithGPay() {
+            window.location.href = "upi://pay?pa=YOUR_PHONE_NUMBER@okicici&pn=YourName&am=49&cu=INR";
+        }
+    </script>
+
+</body>
+</html>
