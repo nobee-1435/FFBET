@@ -13,7 +13,7 @@ app.get("/", (req, res) => {
 // Redirect to Google Pay using UPI Intent (Mobile Number)
 app.get("/pay", (req, res) => {
     const mobileNumber = "7603959664"; // Replace with the recipient's UPI-linked mobile number
-    const amount = "49"; // Amount in INR
+    const amount = "1"; // Amount in INR
     const transactionNote = "Payment for Service";
 
     // Google Pay UPI Intent URL
