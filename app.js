@@ -1,36 +1,23 @@
-const express = require('express');
-const dotenv = require('dotenv');
-const path = require('path');
-const jwt = require('jsonwebtoken');
-const cookieParser = require('cookie-parser');
-dotenv.config();
-const UserModel = require('./models/user');
-
+const express = require("express");
 const app = express();
-app.set("view engine", 'ejs');
-app.use(express.json());
-app.use(express.urlencoded({extended: true}));
-app.use(express.static(path.join(__dirname, 'public')));
-app.use(cookieParser());
+const path = require("path");
 
-app.get('/',async function(req,res){
-    res.render('index');  
-})
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
+app.use(express.static(path.join(__dirname, "public")));
 
-app.post('/setup', async function(req,res){
-    let {name,mobile} = req.body;
-    let user = await UserModel.create({
-        name,
-        mobile
-    })
-    res.send('success...')
-    console.log(user);
-})
+app.get("/", (req, res) => {
+    res.render("index");
+});
 
+// Redirect to Google Pay
+app.get("/pay", (req, res) => {
+    const upiUrl = encodeURI(
+        "upi://pay?pa=malinijayasri2@oksbi&pn=Malini Jayasri&mc=&tid=123456&tr=txn123456&tn=PaymentForService&am=1&cu=INR"
+    );
+    res.redirect(upiUrl);
+});
 
-
-
-app.listen(process.env.PORT, function(){
-    console.log(`Server Running Well on ${process.env.PORT}`);
-    
-})
+app.listen(3001, () => {
+    console.log("Server is running on http://localhost:3000");
+});

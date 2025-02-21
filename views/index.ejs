@@ -3,39 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Google Pay Payment</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 50px;
-        }
-        .btn {
-            background-color: #4285F4;
-            color: white;
-            padding: 15px 25px;
-            font-size: 18px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .btn:hover {
-            background-color: #357ae8;
-        }
-    </style>
+    <title>Google Pay Integration</title>
 </head>
 <body>
-
-    <h2>hii malini Pay ₹49 using Google Pay</h2>
-    <button class="btn" onclick="payWithGPay()">Pay with GPay</button>
-
-    <script>
-        function payWithGPay() {
-            // Google Pay UPI Deep Link
-            const upiLink = "upi://pay?pa=nobee5143-1@oksbi&pn=CK PRAVEEN&mc=0000&tid=123456&tr=TXN12345&tn=Payment%20for%20Service&am=49&cu=INR";
-            window.location.href = upiLink;
-        }
-    </script>
-
+    <h1>Pay ₹1 using Google Pay</h1>
+    <a href="/pay">
+        <button style="padding: 10px 20px; font-size: 16px;">Pay Now</button>
+    </a>
 </body>
 </html>
