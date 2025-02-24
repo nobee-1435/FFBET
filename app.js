@@ -1,21 +1,33 @@
-const express = require("express");
+const exp = require('constants');
+const express = require('express');
 const app = express();
-const path = require("path");
+const path = require('path');
+const dotenv = require('dotenv');
+dotenv.config();
 
-app.set("view engine", "ejs");
+app.set('view engine', 'ejs');
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
-app.set("views", path.join(__dirname, "views"));
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname,'public')));
 
-app.get("/", (req, res) => {
-    res.render("index");
-});
-app.post('/playerDetails', function(req,res){
-    res.redirect("freefire://createroom");
+//moduels
+const PlayerModel = require("./models/player")
+
+app.get('/',async function(req,res){
+    res.render('signup');
 })
 
+app.post('/signup', async function(req,res){
+    let{MobileNo, FFID, FFNAME} = req.body;
+    let player = await PlayerModel.create({
+        MobileNo,
+        FFID,
+        FFNAME
+    })
+    res.send('success');
+    console.log(player);
+})
 
-app.listen(3001, () => {
-    console.log("Server is running on http://localhost:3000");
-});
+app.listen(process.env.PORT, function(){
+    console.log('server running well 🤞');
+})
