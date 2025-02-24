@@ -12,7 +12,7 @@ app.get("/", (req, res) => {
     res.render("index");
 });
 app.post('/playerDetails', function(req,res){
-    res.redirect("freefire://");
+    res.redirect("freefire://createroom");
 })
 
 
