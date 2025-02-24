@@ -6,3 +6,107 @@
     height: 100vh;
     width: 100%;
 }
+.main-container .ff-bet{
+    font-size: 20px;
+    font-weight: 900;
+    text-align: center;
+    color: red;
+    padding: 10px 0px 10px 0px;
+    background-color: rgb(204, 204, 144);
+}
+.sub-main-container{
+    /* height: fit-content;
+    width: fit-content; */
+}
+.sub-main-container .match-trmnt{
+    border: 1px solid black;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    padding: 10px 0px 10px 0px;
+    font-weight: 700;
+}
+.match-details-container{
+    border: 2px solid rgb(218, 218, 218);
+    height: fit-content;
+    margin: 5px;
+    border-radius: 5px;
+    box-shadow: 1px 1px 1px 1px rgb(222, 222, 222);
+}
+.firstprize-matchmodel{
+    display: flex;
+    flex-direction: row;
+    font-size: 17px;
+    font-weight: 700;
+    padding: 5px 0px 5px 5px;
+    background-color: rgb(214, 209, 47);
+    justify-content: space-around;
+}
+
+.match-details-container .prize-entry{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 15px;
+    font-size: 18px;
+    font-weight: 500;
+}
+.match-details-container .prizeamt-entryamt{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0px 15px 0px 15px;
+    font-size: 20px;
+    font-weight: 700;
+}
+.prize-form-container input[type="submit"]{
+    background-color: rgba(0, 128, 0, 0.829);
+    padding: 8px 25px 8px 25px;
+    border: none;
+    color: #fff;
+    border-radius: 5px;
+    font-size: 15px;
+}
+.participants-counts{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    padding: 5px 0px 5px 0px;
+    background-color: rgb(255, 128, 0);
+    margin-top: 5px;
+    font-size: 19px;
+    font-weight: 500;
+    color: #fff;
+}
+.Player-details-container{
+    padding: 5px 0px 5px 10px;
+}
+.Player-details-form-container{
+    display: flex;
+    flex-direction: row;
+    font-size: 15px;
+    justify-content: space-evenly;
+}
+.Player-details-container form input[type="submit"]{
+    border: none;
+    background-color: transparent;
+    font-size: 15px;
+    color: blue;
+    cursor: pointer;
+}
+.footer-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    padding: 10px;
+    font-size: 12px; 
+}
+.footer-container .guaranteed-container{
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+}
+.footer-container .guaranteed-container{
+    color: red;
+ 
+}
