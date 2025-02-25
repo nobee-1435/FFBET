@@ -9,6 +9,7 @@ const playerSchema = mongoose.Schema({
     MobileNo: Number,
     FFID: Number,
     FFNAME: String,
+    password: String,
     date: {
         type: Date,
         default: Date.now
