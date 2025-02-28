@@ -10,6 +10,7 @@ const playerSchema = mongoose.Schema({
     FFID: Number,
     FFNAME: String,
     password: String,
+
     date: {
         type: Date,
         default: Date.now

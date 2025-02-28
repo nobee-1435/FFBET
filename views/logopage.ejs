@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FF BET</title>
+    <style>
+        body{
+            display: flex;
+            justify-content: center;
+            align-content: center;
+            background-color: rgb(220, 220, 79);
+        }
+        div p{
+            margin-top: 40vh;
+            font-size: 30px;
+            color: violet;
+            font-weight: 900;
+            font-family: sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <p>FF BET</p>
+    </div>
+
+
+
+
+    <script>
+        setTimeout(() => {
+            let token = "<%= token %>"
+            console.log(token);
+            
+            if(token === ""){
+                window.location.href = '/signup'
+            }
+            else{
+                window.location.href = '/home'
+            };
+        }, 3000)
+    </script>
+</body>
+</html>

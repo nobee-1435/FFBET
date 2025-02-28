@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0,  user-scalable=no">
-    <title>ff bet signup</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>FF BET LOGIN</title>
     <link rel="stylesheet" href="/css/signuplogin.css">
 </head>
 <body>
@@ -11,30 +11,26 @@
 
         <div class="main-container">
             
-            <form action="/signup" method="post" class="form-container">
+            <form action="/login" method="post" class="form-container">
                 <% if (mobileError) { %>
                     <p id="mobile-error"><%= mobileError %></p>
                 <% } %>
-                <h2>SIGN UP</h2>
-                <input type="text" name="MobileNo" placeholder="Mobile No" minlength="10" maxlength="10" inputmode="numeric" pattern="[0-9]*" oninput="this.value=this.value.slice(0,10)" required>
+                <h2>LOGIN</h2>
                 <input type="text" name="FFID" placeholder="Your FF Id" minlength="10" maxlength="10" inputmode="numeric" pattern="[0-9]*" oninput="this.value=this.value.slice(0,10)" required>
-                <input type="text" name="FFNAME" placeholder="Your FF Name" required>
                 <input type="password" minlength="6" maxlength="20" placeholder="password" name="password" id="password" required>
                 <div class="ckeckbox-password-container">
                     <input type="checkbox" id="togglepassword">Check Password
                 </div>
-                <div class="checkbox-agreement-container">
-                    <input type="checkbox" required> Agree terms and conditions
-                </div>
-                <a href="/login">I have a account go to login</a>
+
+                <a href="/signup">I Don't Have a Account go to signup</a>
    
-                <input type="submit" value="Signup">
+                <input type="submit" value="Login">
             </form>
         </div>
     </div>
 
+    
 
     <script src="/js/signuplogin.js"></script>
-
 </body>
 </html>
