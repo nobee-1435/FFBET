@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 
 const matchplayer = mongoose.Schema({
-    Matchsandtournments : {
+    Matchsandtournment : {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Matchsandtournments'
+        ref: 'Matchsandtournment'
     },
     player1: String
 });

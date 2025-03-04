@@ -17,6 +17,9 @@
 .sub-main-container{
     /* height: fit-content;
     width: fit-content; */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 .sub-main-container .match-trmnt{
     border: 1px solid black;
@@ -40,8 +43,18 @@
     font-weight: 700;
     padding: 5px 0px 5px 5px;
     background-color: rgb(214, 209, 47);
-    justify-content: space-around;
+    justify-content: space-evenly;
+    gap: 50px;
 }
+.firstprize-matchmodel input,p{
+    border: none;
+    background-color: transparent;
+    font-weight: 700;
+    font-size: 17px;
+    outline: none;
+    min-width: fit-content;
+}
+
 
 .match-details-container .prize-entry{
     display: flex;

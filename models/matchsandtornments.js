@@ -7,14 +7,16 @@ const matchsandtornmentsSchema = mongoose.Schema({
     playerlimit: String,
     matchstarttime: String,
     playerdetails: String,
-        matchplayers: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Matchplayer'
-    },
+    matchplayer: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'matchplayer'
+        }
+    ],
     date: {
         type: Date,
         default: Date.now
     },
 });
 
-module.exports = mongoose.model('Matchsandtournments', matchsandtornmentsSchema);
+module.exports = mongoose.model('Matchsandtournment', matchsandtornmentsSchema);

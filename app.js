@@ -6,19 +6,13 @@ dotenv.config();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
+const crypto = require("crypto");
+
 const playerModel = require("./models/player");
 const player = require("./models/player");
-const matchsandtornmentsModel = require('./models/matchsandtornments');
+const matchsandtornmentsModel = require("./models/matchsandtornments");
 const { match } = require("assert");
-
-
-
-
-
-
-
-
-
+const playerapplymatchModel = require('./models/playerapplyformatch');
 
 app.set("view engine", "ejs");
 app.use(express.json());
@@ -26,38 +20,39 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(cookieParser());
 
-
 //forpersonal
-app.get('/creatematch', function (req,res) {
-    res.render('matchcreatepage')
-})
+app.get("/creatematch", function (req, res) {
+  res.render("matchcreatepage");
+});
 
-app.post('/creatematchsmyself', async function(req,res){
+app.post("/creatematchsmyself", async function (req, res) {
+  let {
+    matchtype,
+    matchentryamount,
+    matchfirstprice,
+    playerlimit,
+    matchstarttime,
+  } = req.body;
 
-    let { matchtype, matchentryamount, matchfirstprice, playerlimit, matchstarttime} = req.body;
-
-    let creatematch = await matchsandtornmentsModel.create({
-        matchtype,
-        matchentryamount,
-        matchfirstprice,
-        playerlimit,
-        matchstarttime
-    })
-   console.log(creatematch);
-    res.redirect('/creatematch');
-})
+  let creatematch = await matchsandtornmentsModel.create({
+    matchtype,
+    matchentryamount,
+    matchfirstprice,
+    playerlimit,
+    matchstarttime,
+  });
+  console.log(creatematch);
+  res.redirect("/creatematch");
+});
 
 app.get("/", function (req, res) {
   let token = req.cookies.token;
   res.render("logopage", { token });
 });
 
-
-
-
-app.get('/home', isLoggedIn , function(req,res){
-    res.render('home');
-})
+app.get("/home", isLoggedIn, function (req, res) {
+  res.render("home");
+});
 
 // SIGNUP PAGE PACKEND
 
@@ -69,7 +64,7 @@ app.post("/signup", async function (req, res) {
   let { MobileNo, FFID, FFNAME, password } = req.body;
 
   let player = await playerModel.findOne({ FFID });
-  
+
   if (MobileNo.length < 10) {
     return res.render("signup", {
       mobileError: "Invalid Mobile Number",
@@ -98,54 +93,102 @@ app.post("/signup", async function (req, res) {
         password: hash,
       });
       let token = jwt.sign({ FFID: FFID, playerid: player._id }, "freefirebet");
-      res.cookie("token", token);
+      res.cookie("token", token, {
+        httpOnly: true,
+        secure: "freefirebet",
+        maxAge: 1000 * 60 * 60 * 24 * 365 * 10,
+        sameSite: "strict",
+      });
       res.redirect("/home");
     });
   });
 });
 
-app.get('/login', function(req,res){
-    res.render('login', {mobileError: null, FormData: {}});
+app.get("/login", function (req, res) {
+  res.render("login", { mobileError: null, FormData: {} });
+});
+
+app.post("/login", async function (req, res) {
+  let { FFID, password } = req.body;
+
+  let player = await playerModel.findOne({ FFID });
+  if (!player) {
+    return res.render("login", {
+      mobileError: "FF Id was Wrong",
+      FormData: req.body,
+    });
+  }
+  bcrypt.compare(password, player.password, function (err, result) {
+    if (result) {
+      let token = jwt.sign({ FFID: FFID, playerId: player._id }, "freefirebet");
+      res.cookie("token", token, {
+        httpOnly: true,
+        secure: "freefirebet",
+        maxAge: 1000 * 60 * 60 * 24 * 365 * 10,
+        sameSite: "strict",
+      });
+      res.redirect("home");
+    } else {
+      return res.render("login", {
+        mobileError: "Password is wrong",
+        FormData: req.body,
+      });
+    }
+  });
+});
+
+app.get(
+  "/payment/:matchType/:entryAmount/:playerId/:hashedRoute",
+  isLoggedIn,
+  async function (req, res) {
+    let {matchType, entryAmount, playerId} = req.params;
+    const player = await playerModel.findOne({ FFID: req.player.FFID });
+    
+    res.render("payment", {matchType,entryAmount,playerId,player});
+  }
+);
+
+app.post("/payment", isLoggedIn, async function (req, res) {
+  const player = await playerModel.findOne({ FFID: req.player.FFID });
+
+  const playerId = player.FFID;
+  let { entryAmount, matchType } = req.body;
+
+  const hashedRoute = crypto
+    .createHash("sha256")
+    .update(entryAmount)
+    .digest("hex");
+
+  res.redirect(
+    `payment/${matchType}/${entryAmount}/${playerId}/${hashedRoute}`
+  );
+});
+
+app.post('/paymentsend',isLoggedIn, async function(req,res){
+  let{playername,playerid,matchtype,entryamount,paymentmethod,transactionid} = req.body;
+  let playerapply =await playerapplymatchModel.create({
+    playername,
+    playerid,
+    matchtype,
+    entryamount,
+    paymentmethod,
+    transactionid
+  })
+  console.log(playerapply);
+  res.redirect('home');
 })
 
-app.post('/login', async function(req,res){
-    let {FFID, password} = req.body;
 
-    let player = await playerModel.findOne({FFID});
-    if(! player){
-        return res.render('login',{
-            mobileError: "FF Id was Wrong",
-            FormData: req.body,
-        })
-    }
-    bcrypt.compare(password, player.password, function (err, result) {
-        if (result) {
-          let token = jwt.sign({ FFID: FFID, userid: player._id }, "freefirebet");
-          res.cookie("token", token);
-          res.redirect("home");
-        } else {
-          return res.render("login", {
-            mobileError: "Password is wrong",
-            FormData: req.body,
-          });
-        }
-      });
-});
-
-
-
-function isLoggedIn(req, res, next){
-
-    if(req.cookies.token === ""){
-        res.redirect('/signup');
-    }else{
-        const data = jwt.verify(req.cookies.token, "freefirebet");
-        req.player = data;
-    }
-    next();
+function isLoggedIn(req, res, next) {
+  if (req.cookies.token === "") {
+    res.redirect("/signup");
+  } else {
+    const data = jwt.verify(req.cookies.token, "freefirebet");
+    req.player = data;
+  }
+  next();
 }
 
-app.listen(process.env.PORT || 3000, function(){
-    console.log('server running well ✔');
+app.listen(process.env.PORT || 3000, function () {
+  console.log("server running well ✔");
 });
-

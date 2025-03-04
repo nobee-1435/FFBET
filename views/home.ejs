@@ -14,22 +14,64 @@
             <div class="match-details-container">
                 <div class="firstprize-matchmodel">
                     <p class="first-prize">1st prize 500</p>
-                    <p>SOLO MATCH</p>
+                    <input type="text" name="matchType" value="SOLO MATCH" readonly>
                 </div>
-
                 <div class="prize-entry">
                     <p>prize pool</p>
                     <p>Entry Amount</p>
                 </div>
                 <div class="prizeamt-entryamt">
                     <p>₹500 Rupees</p>
-                    <form class="prize-form-container" action="" method="post">
-                        <input type="submit" value="₹49">
+                    <form class="prize-form-container" id="paymentpage-submit-btn" action="/payment" method="post">
+                        <input type="hidden" name="matchType" value="SOLO MATCH" readonly>
+                        <input type="submit" class="entryamount-btn" name="entryAmount" value="₹49">
                     </form>
                 </div>
                 <div class="participants-counts">
-                    <p>Total Participants</p>
-                    <p>50/50</p>
+                    <div>
+                        <p>Total Participants</p>
+                    </div>
+                    <div>
+                        <span id="registered-payer">50</span>/<span id="posible-player">50</span>
+                    </div>
+                </div>
+                <div class="Player-details-container">
+                    <form class="Player-details-form-container" action="/playerDetails" method="post">
+                    <input type="submit" value="Player Details">
+                    <p>Time: 3.00 pm</p> 
+                    </form>
+                </div>
+                <div class="footer-container">
+                    <p>1st prize ₹500</p>
+                    <div class="guaranteed-container">
+                        <p>✔ Your Not In Team</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="match-details-container">
+                <div class="firstprize-matchmodel">
+                    <p class="first-prize">1st prize 500</p>
+                    <input type="text" name="matchType" value="SOLO MATCH" readonly>
+                </div>
+                <div class="prize-entry">
+                    <p>prize pool</p>
+                    <p>Entry Amount</p>
+                </div>
+                <div class="prizeamt-entryamt">
+                    <p>₹500 Rupees</p>
+                    <form class="prize-form-container" id="paymentpage-submit-btn" action="/payment" method="post">
+                        <input type="hidden" name="matchType" value="SOLO MATCH" readonly>
+                        <input type="submit" class="entryamount-btn" name="entryAmount" value="₹49">
+                    </form>
+                </div>
+                <div class="participants-counts">
+                    <div>
+                        <p>Total Participants</p>
+                    </div>
+                    <div>
+                        <span id="registered-payer">50</span>/<span id="posible-player">50</span>
+                    </div>
                 </div>
                 <div class="Player-details-container">
                     <form class="Player-details-form-container" action="/playerDetails" method="post">
@@ -46,5 +88,11 @@
             </div>
         </div>
     </div>
+
+ 
+
+
+
+    <script src="/js/home.js"></script>
 </body>
 </html>
