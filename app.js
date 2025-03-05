@@ -10,11 +10,11 @@ const crypto = require("crypto");
 
 const playerModel = require("./models/player");
 const player = require("./models/player");
-const matchsandtornmentsModel = require("./models/matchsandtornments");
-const { match } = require("assert");
-const playerapplymatchModel = require('./models/playerapplyformatch');
+const matchFullDetailsModel = require("./models/matchFullDetails");
 
-app.set("view engine", "ejs");
+
+
+app.set('view engine', 'ejs')
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
@@ -25,25 +25,6 @@ app.get("/creatematch", function (req, res) {
   res.render("matchcreatepage");
 });
 
-app.post("/creatematchsmyself", async function (req, res) {
-  let {
-    matchtype,
-    matchentryamount,
-    matchfirstprice,
-    playerlimit,
-    matchstarttime,
-  } = req.body;
-
-  let creatematch = await matchsandtornmentsModel.create({
-    matchtype,
-    matchentryamount,
-    matchfirstprice,
-    playerlimit,
-    matchstarttime,
-  });
-  console.log(creatematch);
-  res.redirect("/creatematch");
-});
 
 app.get("/", function (req, res) {
   let token = req.cookies.token;
