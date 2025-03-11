@@ -6,12 +6,14 @@ const appliedPlayerListSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'matchFullDetails'
     },
+    MDmatchId: String,
     playerName : String,
     playerId: String,
     matchType: String,
     entryAmount: String,
+    paymentMethod: String,
     matchStartingTime: String,
-    paymentTransactionId: String,
+    TransactionId: Number,
     date: {
         type: Date,
         default: Date.now

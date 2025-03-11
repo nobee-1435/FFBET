@@ -14,7 +14,7 @@
     flex-direction: column;
     gap: 10px;
     position: relative;
-    top: 50px;
+    top: 20px;
 }
 .main-container h3{
     padding-top: 10px;
@@ -49,10 +49,11 @@
     display: none;
 }
 .payment-options p{
-    background-color: rgb(32, 172, 86);
+    background-color: rgb(192, 241, 209);
     padding: 5px;
     margin-top: 5px;
-    color: #fff;
+    color: black;
+    font-weight: 700;
 }
 .upiid-paynumber-container{
     display: flex;
@@ -70,6 +71,23 @@
     outline: none;
     border: none;
     display: none;
+    width: 70vw;
+    padding: 5px 10px 5px 10px;
+    position: relative;
+    top: 20px;
+    animation-name: erroranimi;
+    animation-duration: 1s;
+    font-size: 18px;
+}
+@keyframes erroranimi {
+    0%{
+        position: relative;
+        top: 0px;
+    }
+    100%{
+        position: relative;
+        top: 20px;
+    }
 }
 
 
