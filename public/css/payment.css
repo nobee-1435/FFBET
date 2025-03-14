@@ -79,6 +79,14 @@
     animation-duration: 1s;
     font-size: 18px;
 }
+.gpay-btn{
+    padding: 5px;
+    font-size: 18px;
+    color: #fff;
+    background-color: green;
+    border: none;
+    border-radius: 5px;
+}
 @keyframes erroranimi {
     0%{
         position: relative;

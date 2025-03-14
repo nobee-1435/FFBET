@@ -17,6 +17,7 @@ const appliedPlayerListModel = require("./models/appliedPlayerList");
 const selectedPlayerListModel = require("./models/selectedPlayerList");
 const { log } = require("console");
 const matchFullDetails = require("./models/matchFullDetails");
+const mainMatchContainer = require("./models/mainMatchContainer");
 
 app.set('view engine', 'ejs')
 app.use(express.json());
@@ -62,6 +63,20 @@ app.post('/creatematchsmyself',async function(req,res){
   res.redirect('/ffbetcreatematchmyself')
 })
 
+app.get('/playerselectedpage', async function(req,res){
+  let matchFullDetails = await matchFullDetailsModel.find().populate('appliedPlayerList');
+  
+  
+  res.render('playerselectedpage', {matchFullDetails});
+})
+
+app.post('/playerSelect', async function(req,res){
+  res.send('selected')
+})
+app.post('/playerReject', async function(req,res){
+  res.send('Reject')
+})
+
 
 
 
@@ -75,10 +90,6 @@ app.get("/home", isLoggedIn,async function (req, res) {
   let mainMatchContainer = await mainMatchContainerModel.find().populate('matchFullDetails');
   const matchAppliedorcanceled = req.session.matchAppliedorcanceled;
   req.session.matchAppliedorcanceled = null;
-
- 
-  
-  
   
   res.render("home", {mainMatchContainer, matchAppliedorcanceled: matchAppliedorcanceled});
 });
@@ -128,10 +139,7 @@ app.post("/signup", async function (req, res) {
         maxAge: 1000 * 60 * 60 * 24 * 365 * 10,
         sameSite: "strict",
       });
-      res.redirect("/home", {
-        homeNotification: "your Your ID was Added Successfully",
-        FormData: req.body,
-      });
+      res.redirect("/home");
     });
   });
 });
