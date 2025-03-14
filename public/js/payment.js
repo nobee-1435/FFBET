@@ -27,7 +27,7 @@ payment_Form.addEventListener('submit', function(event){
 // go to gpay path and function
 
 function redirectToGPay() {
-    window.location.href = 'upi://pay?pa=merchant@bank&pn=Merchant%20Name&mc=1234&tid=0123456789&tr=123456789&tn=Payment%20for%20Order&am=100&cu=INR';
+    window.location.href = 'https://pay.google.com/gp/w/u/0/home/activity';
   }
 
 
