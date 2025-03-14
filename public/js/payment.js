@@ -26,9 +26,6 @@ payment_Form.addEventListener('submit', function(event){
 
 // go to gpay path and function
 
-function redirectToGPay() {
-    window.location.href = 'https://pay.google.com/gp/w/u/0/home/activity';
-  }
 
 
 
