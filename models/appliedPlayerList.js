@@ -14,6 +14,8 @@ const appliedPlayerListSchema = mongoose.Schema({
     paymentMethod: String,
     matchStartingTime: String,
     TransactionId: Number,
+    selectbtn: String,
+    rejectbtn: String,
     date: {
         type: Date,
         default: Date.now

@@ -22,7 +22,6 @@
             <% mainMatchContainer.forEach(mainMatchContainer => { %>
                 <% mainMatchContainer.matchFullDetails.forEach(match => { %>
                     <div class="match-details-container">     
-
                         <div class="firstprize-matchmodel">
                             <p class="first-prize">1st prize ₹<%= match.firstPrice %></p>
                             <!-- <input type="text" name="matchType" value="1st Pirce ₹<%= match.firstPrice%>" readonly> -->
@@ -51,7 +50,8 @@
                             </div>
                         </div>
                         <div class="Player-details-container">
-                            <form class="Player-details-form-container" action="/playerDetails" method="post">
+                            <form class="Player-details-form-container" action="/playerdetails" method="post">
+                                <input type="hidden" name="MDmatchId" value="<%= match._id %>" readonly>
                                 <input type="submit" value="Player Details">
                                 <p>Time: <%= match.matchStartingTime %></p> 
                             </form>

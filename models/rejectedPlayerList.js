@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const selectedPlayerListSchema = mongoose.Schema({
+const rejectedPlayerListSchema = mongoose.Schema({
     matchfullDetails: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'matchFullDetails'
@@ -20,5 +20,5 @@ const selectedPlayerListSchema = mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model('selectedPlayerList', selectedPlayerListSchema);
+module.exports = mongoose.model('rejectedPlayerList', rejectedPlayerListSchema);
 

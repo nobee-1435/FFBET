@@ -15,9 +15,12 @@ const mainMatchContainerModel = require("./models/mainMatchContainer");
 const matchFullDetailsModel = require("./models/matchFullDetails");
 const appliedPlayerListModel = require("./models/appliedPlayerList");
 const selectedPlayerListModel = require("./models/selectedPlayerList");
+const rejectedPlayerListModel = require("./models/rejectedPlayerList");
 const { log } = require("console");
 const matchFullDetails = require("./models/matchFullDetails");
 const mainMatchContainer = require("./models/mainMatchContainer");
+const selectedPlayerList = require("./models/selectedPlayerList");
+const appliedPlayerList = require("./models/appliedPlayerList");
 
 app.set('view engine', 'ejs')
 app.use(express.json());
@@ -64,20 +67,71 @@ app.post('/creatematchsmyself',async function(req,res){
 })
 
 app.get('/playerselectedpage', async function(req,res){
-  let matchFullDetails = await matchFullDetailsModel.find().populate('appliedPlayerList');
+  let appliedPlayerList = await appliedPlayerListModel.find();
+  let matchFullDetails = await matchFullDetailsModel.find();
   
   
-  res.render('playerselectedpage', {matchFullDetails});
+  res.render('playerselectedpage', {appliedPlayerList});
 })
 
 app.post('/playerSelect', async function(req,res){
-  res.send('selected')
-})
+
+  let{MDmatchId,appliedplayerMDmatchid,playerName,playerId,matchType,paymentMethod,matchStartingTime,entryAmount,TransactionId} = req.body;
+
+  const matchFullDetails = await matchFullDetailsModel.findById({ _id: MDmatchId });
+
+  let selectedPlayerList = await selectedPlayerListModel.create({
+    MDmatchId,
+    appliedplayerMDmatchid,
+    playerName,
+    playerId,
+    matchType,
+    paymentMethod,
+    matchStartingTime,
+    entryAmount,
+    TransactionId
+  })
+  let appliedPlayerList = await appliedPlayerListModel.updateOne({ _id: appliedplayerMDmatchid }, { $set : {selectbtn: 'Selected'}});
+  console.log(appliedPlayerList);
+  
+  await selectedPlayerList.save();
+  matchFullDetails.selectedPlayerList.push(selectedPlayerList._id);
+  await matchFullDetails.save();
+  console.log(selectedPlayerList);
+  return res.redirect('playerselectedpage');
+
+});
 app.post('/playerReject', async function(req,res){
-  res.send('Reject')
+
+  let{MDmatchId,appliedplayerMDmatchid,playerName,playerId,matchType,paymentMethod,matchStartingTime,entryAmount,TransactionId} = req.body;
+
+  const matchFullDetails = await matchFullDetailsModel.findById({ _id: MDmatchId });
+
+  let rejectedPlayerList = await rejectedPlayerListModel.create({
+    MDmatchId,
+    appliedplayerMDmatchid,
+    playerName,
+    playerId,
+    matchType,
+    paymentMethod,
+    matchStartingTime,
+    entryAmount,
+    TransactionId
+  })
+  await appliedPlayerListModel.updateOne({ _id: appliedplayerMDmatchid }, { $set : {rejectbtn: 'Rejected'}});
+  await appliedPlayerListModel.findOneAndDelete({ _id: appliedplayerMDmatchid })
+  await matchFullDetailsModel.updateOne(
+    { _id: MDmatchId },
+    { $pull: { appliedPlayerList: appliedplayerMDmatchid } }
+  );
+  
+  await rejectedPlayerList.save();
+  matchFullDetails.rejectedPlayerList.push(rejectedPlayerList._id);
+  await matchFullDetails.save();
+  return res.redirect('playerselectedpage');
+
+
 })
-
-
 
 
 
@@ -198,8 +252,6 @@ app.post("/payment", isLoggedIn, async function (req, res) {
   const playerId = player.FFID;
   let { MDmatchId, entryAmount, matchType, matchStartingTime} = req.body;
 
-  
-
   const hashedRoute = crypto
     .createHash("sha256")
     .update(entryAmount)
@@ -239,6 +291,8 @@ if (matchFullDetails) {
       entryAmount,
       paymentMethod,
       TransactionId,
+      selectbtn: "Select",
+      rejectbtn: "Reject"
     })
     await appliedPlayerList.save();
     matchFullDetails.appliedPlayerList.push(appliedPlayerList._id);
@@ -250,20 +304,25 @@ if (matchFullDetails) {
 
 })
 
-async function xxx(req,res) {
-  let match = await matchFullDetailsModel
-  .findById('67ce9b2aff9fdada9cb9bbdd')
-  .populate('appliedPlayerList');
+app.get('/playerdetails/:MDmatchId/:hashedRoute', isLoggedIn, async function(req,res){
+  let {MDmatchId} = req.params;
 
-if (match) {
-  // Extract only the playerId values
-  const playerIds = match.appliedPlayerList.map(player => player.playerId);
-  console.log('All player IDs:', playerIds);
-} else {
-  console.log('Match not found');
-}
+  const matchFullDetails = await matchFullDetailsModel.findById({ _id: MDmatchId }).populate("selectedPlayerList");
+
+  res.render('playerDetails', {matchFullDetails: matchFullDetails.selectedPlayerList})
+})
+
+app.post('/playerdetails', isLoggedIn, async function(req,res){
+  let { MDmatchId } = req.body;
   
-  
+  const hashedRoute = crypto.createHash("sha256").update(MDmatchId).digest("hex");
+  res.redirect(`/playerDetails/${MDmatchId}/${hashedRoute}`);
+})
+
+async function xxx(req,res) {
+let yyy = await rejectedPlayerListModel.find({});
+  console.log(yyy);
+
 }
 // xxx()
 

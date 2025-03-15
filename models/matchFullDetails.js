@@ -22,6 +22,12 @@ const matchFullDetailsSchema = mongoose.Schema({
             ref: 'selectedPlayerList'
         }
     ],
+    rejectedPlayerList: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'rejectedPlayerList'
+        }
+    ],
     date: {
         type: Date,
         default: Date.now

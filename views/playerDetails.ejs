@@ -7,9 +7,19 @@
     <link rel="stylesheet" href="/css/playerDetails.css">
 </head>
 <body>
-    <div style="text-align: center;">
-        <p>hii</p>
-    </div>
-    
+    <div class="main-container">
+        <div class="submain-container">
+            <% matchFullDetails.forEach(selectedPlayerList => {%>
+                <p class="count-box"></p>
+                <div class="playernameandid-container">
+                    <p><%= selectedPlayerList.playerName %></p>
+                    <p><%= selectedPlayerList.playerId %></p>
+                </div>
+            <%}) %>
+        </div>
+    </div> 
+
+
+    <script src="/js/playerDetails.js"></script>
 </body>
 </html>
