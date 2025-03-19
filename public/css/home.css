@@ -125,14 +125,39 @@
     flex-direction: row;
     gap: 5px;
 }
-.footer-container .guaranteed-container{
+.guaranteed-container .isTeam{
+    color: rgb(56, 195, 56);
+}
+.guaranteed-container .isNotTeam{
     color: red;
- 
+}
+.roomid-password-container{
+    border: 1px solid #fff;
+    width: fit-content;
+    padding: 5px;
+    border-radius: 5px;
+    background-color: rgb(207, 216, 138);
+    color: black;
+    line-height: 20px;
+
+}
+.roomid-password-container .roomid,.roompassword{
+    color: red;
+    font-size: 12px;
+}
+.roomid-password-container p{
+    font-size: 15px;
+    font-weight: 600;
+    word-spacing: 5px;
 }
 
 @media (max-width: 450px) {
     .firstprize-matchmodel input,p{
         font-size: 13px;
+    }
+    .roomid-password-container p{
+    font-size: 13px;
+    font-weight: 200;
     }
     
 }

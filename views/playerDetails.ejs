@@ -12,8 +12,9 @@
             <% matchFullDetails.forEach(selectedPlayerList => {%>
                 <p class="count-box"></p>
                 <div class="playernameandid-container">
-                    <p><%= selectedPlayerList.playerName %></p>
-                    <p><%= selectedPlayerList.playerId %></p>
+                    <input type="text" name="playerName" value="<%= selectedPlayerList.playerName %>" readonly>
+                    <input type="text" name="playerId" value="<%= selectedPlayerList.playerId %>" readonly>
+                 
                 </div>
             <%}) %>
         </div>

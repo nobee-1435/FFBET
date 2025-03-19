@@ -47,7 +47,8 @@ app.get("/ffbetcreatematchmyself",async function (req, res) {
 app.post('/creatematchsmyself',async function(req,res){
   const mainMatchContainer = await mainMatchContainerModel.findOne();  
 
-  let {matchType,entryAmount,firstPrice,secondPrice,thirdPrice,fourthandfifthPrice,sixthtoteenthPrice,totalParticipantPlayerNumber,matchStartingTime} = req.body;
+  let {matchType,entryAmount,firstPrice,secondPrice,thirdPrice,fourthandfifthPrice,sixthtoteenthPrice,totalParticipantPlayerNumber,matchStartingTime,roomId,
+  roomPassword} = req.body;
 
   let matchFullDetails = await matchFullDetailsModel.create({
     matchType,
@@ -58,7 +59,9 @@ app.post('/creatematchsmyself',async function(req,res){
     fourthandfifthPrice,
     sixthtoteenthPrice,
     totalParticipantPlayerNumber,
-    matchStartingTime
+    matchStartingTime,
+    roomId,
+    roomPassword
   });
   await matchFullDetails.save();
   mainMatchContainer.matchFullDetails.push(matchFullDetails._id);
@@ -131,7 +134,7 @@ app.post('/playerReject', async function(req,res){
   return res.redirect('playerselectedpage');
 
 
-})
+});
 
 
 
@@ -144,8 +147,21 @@ app.get("/home", isLoggedIn,async function (req, res) {
   let mainMatchContainer = await mainMatchContainerModel.find().populate('matchFullDetails');
   const matchAppliedorcanceled = req.session.matchAppliedorcanceled;
   req.session.matchAppliedorcanceled = null;
+
   
-  res.render("home", {mainMatchContainer, matchAppliedorcanceled: matchAppliedorcanceled});
+
+  const roomIdAndPassowrd = req.session.roomIdAndPassowrd;
+  req.session.roomIdAndPassowrd = null;
+
+  let matchFullDetails = await matchFullDetailsModel.find().populate('selectedPlayerList');
+  const player = await playerModel.findOne({ FFID: req.player.FFID });
+  
+  
+  
+  
+  
+  
+  res.render("home", {mainMatchContainer,player, matchAppliedorcanceled: matchAppliedorcanceled, roomIdAndPassowrd: roomIdAndPassowrd});
 });
 
 // SIGNUP PAGE PACKEND
@@ -308,6 +324,14 @@ app.get('/playerdetails/:MDmatchId/:hashedRoute', isLoggedIn, async function(req
   let {MDmatchId} = req.params;
 
   const matchFullDetails = await matchFullDetailsModel.findById({ _id: MDmatchId }).populate("selectedPlayerList");
+  let player = await playerModel.findOne({ FFID: req.player.FFID});
+
+  console.log(matchFullDetails);
+  
+
+
+  
+  // req.session.matchAppliedorcanceled = 'Applied Sucessfully.. Wait for few Minutes.. you will be add that match';
 
   res.render('playerDetails', {matchFullDetails: matchFullDetails.selectedPlayerList})
 })

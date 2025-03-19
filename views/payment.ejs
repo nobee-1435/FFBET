@@ -13,9 +13,9 @@
         <form action="/paymentsend" method="post" class="form-container" id="payment-Form">
             <input type="hidden" name="MDmatchId" value="<%= MDmatchId %>">
             <label for="">Player Name</label>
-            <input type="text" name="playerName" value="<%= player.FFNAME %>">
+            <input type="text" name="playerName" value="<%= player.FFNAME %>" readonly>
             <label for="">Player Id</label>
-            <input type="text" name="playerId" value="<%= player.FFID %>">
+            <input type="text" name="playerId" value="<%= player.FFID %>" readonly>
             <label for="">Match Type</label>
             <input type="text" name="matchType" value="<%= matchType %>" readonly>
             <label for="">Entry Amount</label>

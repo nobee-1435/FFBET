@@ -10,6 +10,8 @@ const matchFullDetailsSchema = mongoose.Schema({
     sixthtoteenthPrice: String,
     totalParticipantPlayerNumber : String,
     matchStartingTime: String,
+    roomId: String,
+    roomPassword: String,
     appliedPlayerList: [
         {
         type: mongoose.Schema.Types.ObjectId,
