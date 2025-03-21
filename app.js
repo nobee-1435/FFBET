@@ -148,20 +148,19 @@ app.get("/home", isLoggedIn,async function (req, res) {
   const matchAppliedorcanceled = req.session.matchAppliedorcanceled;
   req.session.matchAppliedorcanceled = null;
 
-  
-
-  const roomIdAndPassowrd = req.session.roomIdAndPassowrd;
-  req.session.roomIdAndPassowrd = null;
 
   let matchFullDetails = await matchFullDetailsModel.find().populate('selectedPlayerList');
   const player = await playerModel.findOne({ FFID: req.player.FFID });
+  const playerFFID = player.FFID;
   
   
   
   
   
   
-  res.render("home", {mainMatchContainer,player, matchAppliedorcanceled: matchAppliedorcanceled, roomIdAndPassowrd: roomIdAndPassowrd});
+  
+  
+  res.render("home", {mainMatchContainer,playerFFID, matchAppliedorcanceled: matchAppliedorcanceled});
 });
 
 // SIGNUP PAGE PACKEND
@@ -266,6 +265,7 @@ app.post("/payment", isLoggedIn, async function (req, res) {
   const player = await playerModel.findOne({ FFID: req.player.FFID });
 
   const playerId = player.FFID;
+  
   let { MDmatchId, entryAmount, matchType, matchStartingTime} = req.body;
 
   const hashedRoute = crypto
@@ -325,14 +325,6 @@ app.get('/playerdetails/:MDmatchId/:hashedRoute', isLoggedIn, async function(req
 
   const matchFullDetails = await matchFullDetailsModel.findById({ _id: MDmatchId }).populate("selectedPlayerList");
   let player = await playerModel.findOne({ FFID: req.player.FFID});
-
-  console.log(matchFullDetails);
-  
-
-
-  
-  // req.session.matchAppliedorcanceled = 'Applied Sucessfully.. Wait for few Minutes.. you will be add that match';
-
   res.render('playerDetails', {matchFullDetails: matchFullDetails.selectedPlayerList})
 })
 
@@ -343,12 +335,7 @@ app.post('/playerdetails', isLoggedIn, async function(req,res){
   res.redirect(`/playerDetails/${MDmatchId}/${hashedRoute}`);
 })
 
-async function xxx(req,res) {
-let yyy = await rejectedPlayerListModel.find({});
-  console.log(yyy);
 
-}
-// xxx()
 
 
 function isLoggedIn(req, res, next) {

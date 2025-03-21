@@ -23,12 +23,26 @@
                 <% mainMatchContainer.matchFullDetails.forEach(match => { %>
                     <div class="match-details-container">     
                         <div class="firstprize-matchmodel">
-                            <p class="first-prize">1st prize ₹<%= match.firstPrice %></p>
-                            <!-- <input type="text" name="matchType" value="1st Pirce ₹<%= match.firstPrice%>" readonly> -->
+                            <div class="firstPrizeandPriceArrowContainer">
+                                <p class="first-prize">1st prize ₹<%= match.firstPrice %></p>
+                                <button class="arrowbtnContainer" onclick="toggleContainer()">
+                                    <span id="arrow" class="arrow">▼</span>Prize Details
+                                  </button>
+                                
+                                  <div class="prizeContainer" id="prizeContainer">
+                                    <ul>
+                                      <li>1st Prize: <%= match.firstPrice %> Rupees</li>
+                                      <li>2nd Prize: <%= match.secondPrice %> Rupees</li>
+                                      <li>4-5th Prize: <%= match.fourthandfifthPrice %> Rupees</li>
+                                      <li>6-10th Prize: <%= match.sixthtoteenthPrice %> Rupees</li>
+                                      <li>3rd Prize: <%= match.thirdPrice %> Rupees</li>
+                                    </ul>
+                                  </div>
+                            </div>
                             <input type="text" name="matchType" value="<%= match.matchType %>" readonly>
                         </div>
                         <% 
-                        let isPlayerSelected = match.selectedPlayerList.some(player => player.playerId === player.FFID);
+                        let isPlayerSelected = match.selectedPlayerList.some(player => player.playerId === playerFFID);
                         if(isPlayerSelected){ %>
                             <div class="roomid-password-container">
                                 <p>ROOM ID: <span class="roomid"><%= match.roomId %></span></p>
@@ -62,7 +76,7 @@
                         <div class="Player-details-container">
                             <form class="Player-details-form-container" action="/playerdetails" method="post">
                                 <% 
-                                let isPlayerSelectedforplayerDetails = match.selectedPlayerList.some(player => player.playerId === player.FFID);
+                                let isPlayerSelectedforplayerDetails = match.selectedPlayerList.some(player => player.playerId === playerFFID);
                                 if(isPlayerSelectedforplayerDetails){ %>
                                 <input type="submit" value="Player Details">
                                     <% }  
@@ -76,7 +90,7 @@
                             <p>1st prize ₹<%= match.firstPrice %></p>
                             <div class="guaranteed-container">
                                 <% 
-                                let isPlayerSelectedforisteam = match.selectedPlayerList.some(player => player.playerId === player.FFID);
+                                let isPlayerSelectedforisteam = match.selectedPlayerList.some(player => player.playerId === playerFFID);
                                 if(isPlayerSelectedforisteam){ %>
                                     <p class="isTeam">You Are In Team</p>
                                     <% } else{%>

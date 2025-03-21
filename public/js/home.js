@@ -29,3 +29,21 @@ if(matchApplied_Succes_Notification_Bar.style.display = 'block'){
         matchApplied_Succes_Notification_Bar.style.display = 'none';
     }, 10000);
 }
+
+//prize detials container show functions
+document.addEventListener('click', (event) => {
+    // Check if the clicked element is a button inside a match container
+    if (event.target.closest('.arrowbtnContainer')) {
+      const button = event.target.closest('.arrowbtnContainer');
+      const container = button.closest('.firstPrizeandPriceArrowContainer').querySelector('.prizeContainer');
+      const arrow = button.querySelector('.arrow');
+
+      if (container.style.display === 'none' || container.style.display === '') {
+        container.style.display = 'block';
+        arrow.textContent = '▲'; // Change to up arrow
+      } else {
+        container.style.display = 'none';
+        arrow.textContent = '▼'; // Change to down arrow
+      }
+    }
+  });
