@@ -95,13 +95,10 @@ app.post('/playerSelect', async function(req,res){
     TransactionId
   })
   let appliedPlayerList = await appliedPlayerListModel.updateOne({ _id: appliedplayerMDmatchid }, { $set : {selectbtn: 'Selected'}});
-  console.log(appliedPlayerList);
   
   await selectedPlayerList.save();
   matchFullDetails.selectedPlayerList.push(selectedPlayerList._id);
   await matchFullDetails.save();
-  console.log(selectedPlayerList);
-  return res.redirect('playerselectedpage');
 
 });
 app.post('/playerReject', async function(req,res){
@@ -144,15 +141,29 @@ app.get("/", function (req, res) {
 });
 
 app.get("/home", isLoggedIn,async function (req, res) {
-  let mainMatchContainer = await mainMatchContainerModel.find().populate('matchFullDetails');
+  let mainMatchContainer = await mainMatchContainerModel.find().populate({
+    path: 'matchFullDetails',
+    populate: {
+      path: 'selectedPlayerList',
+      model: 'selectedPlayerList'
+    }
+  });
   const matchAppliedorcanceled = req.session.matchAppliedorcanceled;
   req.session.matchAppliedorcanceled = null;
 
-
-  let matchFullDetails = await matchFullDetailsModel.find().populate('selectedPlayerList');
-  const player = await playerModel.findOne({ FFID: req.player.FFID });
+  const player = await playerModel.findOne({ player: req.FFID }); // Example player
   const playerFFID = player.FFID;
   
+  const filteredMatches = mainMatchContainer.map(container => {
+      container.matchFullDetails = container.matchFullDetails.map(match => {
+          match.showRoomDetails = match.selectedPlayerList.some(player => player.playerId === String(playerFFID));
+          return match;
+      });
+      return container;
+  });
+  
+  
+
   
   
   
@@ -160,7 +171,7 @@ app.get("/home", isLoggedIn,async function (req, res) {
   
   
   
-  res.render("home", {mainMatchContainer,playerFFID, matchAppliedorcanceled: matchAppliedorcanceled});
+  res.render("home", { mainMatchContainer: filteredMatches,matchAppliedorcanceled: matchAppliedorcanceled});
 });
 
 // SIGNUP PAGE PACKEND
