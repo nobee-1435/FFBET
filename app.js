@@ -151,8 +151,9 @@ app.get("/home", isLoggedIn,async function (req, res) {
   const matchAppliedorcanceled = req.session.matchAppliedorcanceled;
   req.session.matchAppliedorcanceled = null;
 
-  const player = await playerModel.findOne({ player: req.FFID }); // Example player
+  const player = await playerModel.findOne({FFID: req.player.FFID}); // Example player
   const playerFFID = player.FFID;
+  
   
   const filteredMatches = mainMatchContainer.map(container => {
       container.matchFullDetails = container.matchFullDetails.map(match => {
