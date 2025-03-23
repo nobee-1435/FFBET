@@ -8,7 +8,11 @@
 </head>
 <body>
     <div class="main-container">
-        <p class="ff-bet">FF BET</p>
+        <div class="ff-bet">
+            <p >FF BET</p>
+            <a href="/playerdetails"><%= player.FFNAME.charAt(0) %></a>
+        </div>
+     
       <div class="sub-main-container">
             <% if(matchAppliedorcanceled) { %>
                 <div class="homenotification">

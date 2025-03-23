@@ -163,16 +163,7 @@ app.get("/home", isLoggedIn,async function (req, res) {
       return container;
   });
   
-  
-
-  
-  
-  
-  
-  
-  
-  
-  res.render("home", { mainMatchContainer: filteredMatches,matchAppliedorcanceled: matchAppliedorcanceled});
+  res.render("home", { mainMatchContainer: filteredMatches,player,matchAppliedorcanceled: matchAppliedorcanceled});
 });
 
 // SIGNUP PAGE PACKEND
@@ -257,6 +248,13 @@ app.post("/login", async function (req, res) {
     }
   });
 });
+
+app.get('/playerdetails',isLoggedIn, async function(req,res){
+  const player = await playerModel.findOne({FFID: req.player.FFID});
+ 
+  
+  res.render('playerdetailspage', {player})
+})
 
 app.get(
   "/payment/:matchType/:entryAmount/:playerId/:matchStartingTime/:MDmatchId/:hashedRoute",
