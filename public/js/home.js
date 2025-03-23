@@ -31,19 +31,22 @@ if(matchApplied_Succes_Notification_Bar.style.display = 'block'){
 }
 
 //prize detials container show functions
-document.addEventListener('click', (event) => {
-    // Check if the clicked element is a button inside a match container
-    if (event.target.closest('.arrowbtnContainer')) {
-      const button = event.target.closest('.arrowbtnContainer');
-      const container = button.closest('.firstPrizeandPriceArrowContainer').querySelector('.prizeContainer');
-      const arrow = button.querySelector('.arrow');
+function toggleContainer(button) {
+    const prizeContainer = button.nextElementSibling;
+    const arrow = button.querySelector('.arrow');
 
-      if (container.style.display === 'none' || container.style.display === '') {
-        container.style.display = 'block';
-        arrow.textContent = '▲'; // Change to up arrow
-      } else {
-        container.style.display = 'none';
-        arrow.textContent = '▼'; // Change to down arrow
-      }
+    // Toggle visibility
+    if (prizeContainer.style.display === 'block') {
+        prizeContainer.style.display = 'none';
+        arrow.textContent = '▼'; // Arrow down
+    } else {
+        // Close other open containers
+        document.querySelectorAll('.prizeContainer').forEach(container => {
+            container.style.display = 'none';
+            container.previousElementSibling.querySelector('.arrow').textContent = '▼';
+        });
+
+        prizeContainer.style.display = 'block';
+        arrow.textContent = '▲'; // Arrow up
     }
-  });
+}
