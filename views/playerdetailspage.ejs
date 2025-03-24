@@ -4,12 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ff bet player-details</title>
+    <link rel="stylesheet" href="/css/playerdetailspage.css">
 </head>
 <body>
-    <p><%= player.FFNAME %></p>
-    <p><%= player.FFID %></p>
-    <p><%= player.MobileNo %></p>
-    <a href="/login">Login</a>
-    <a href="/signup">Signup</a>
+    <div class="main-container">
+        <div>
+            <label for="">Player Name</label>
+            <p><%= player.FFNAME %></p>
+            <label for="">Player FF ID</label>
+            <p><%= player.FFID %></p>
+            <label for="">Player Mobile No</label>
+            <p><%= player.MobileNo %></p>
+            <a href="">Terms & Conditions</a>
+            <a href="">YouTube</a>
+            <a href="">Instagram</a>
+            <a href="">Call</a>
+            <a href="/login">Login</a>
+            <a href="/signup">Signup</a>
+        </div>
+
+    </div>
+
 </body>
 </html>
