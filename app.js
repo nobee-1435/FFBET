@@ -36,7 +36,7 @@ app.use(session({
 
 
 //forpersonal
-app.get("/ffbetcreatematchmyself",async function (req, res) {
+app.get("/ffbetcreatematchmyself",isLoggedIn,async function (req, res) {
 
 
   res.render("matchcreatepage");
@@ -44,7 +44,7 @@ app.get("/ffbetcreatematchmyself",async function (req, res) {
 
 
 
-app.post('/creatematchsmyself',async function(req,res){
+app.post('/creatematchsmyself',isLoggedIn,async function(req,res){
   const mainMatchContainer = await mainMatchContainerModel.findOne();  
 
   let {matchType,entryAmount,firstPrice,secondPrice,thirdPrice,fourthandfifthPrice,sixthtoteenthPrice,totalParticipantPlayerNumber,matchStartingTime,roomId,
@@ -69,7 +69,7 @@ app.post('/creatematchsmyself',async function(req,res){
   res.redirect('/ffbetcreatematchmyself')
 })
 
-app.get('/playerselectedpage', async function(req,res){
+app.get('/playerselectedpage',isLoggedIn, async function(req,res){
   let appliedPlayerList = await appliedPlayerListModel.find();
   let matchFullDetails = await matchFullDetailsModel.find();
   
@@ -77,7 +77,7 @@ app.get('/playerselectedpage', async function(req,res){
   res.render('playerselectedpage', {appliedPlayerList});
 })
 
-app.post('/playerSelect', async function(req,res){
+app.post('/playerSelect',isLoggedIn, async function(req,res){
 
   let{MDmatchId,appliedplayerMDmatchid,playerName,playerId,matchType,paymentMethod,matchStartingTime,entryAmount,TransactionId} = req.body;
 
@@ -140,7 +140,8 @@ app.get("/", function (req, res) {
   res.render("logopage", { token });
 });
 
-app.get("/home", isLoggedIn,async function (req, res) {
+app.get("/home",isLoggedIn,async function (req, res) {
+ 
   let mainMatchContainer = await mainMatchContainerModel.find().populate({
     path: 'matchFullDetails',
     populate: {
@@ -151,9 +152,8 @@ app.get("/home", isLoggedIn,async function (req, res) {
   const matchAppliedorcanceled = req.session.matchAppliedorcanceled;
   req.session.matchAppliedorcanceled = null;
 
-  const player = await playerModel.findOne({FFID: req.player.FFID}); // Example player
-  const playerFFID = player.FFID;
-  
+  const player = await playerModel.findOne({ FFID: req.player.FFID });
+  let playerFFID = player.FFID;
   
   const filteredMatches = mainMatchContainer.map(container => {
       container.matchFullDetails = container.matchFullDetails.map(match => {
@@ -165,6 +165,10 @@ app.get("/home", isLoggedIn,async function (req, res) {
   
   res.render("home", { mainMatchContainer: filteredMatches,player,matchAppliedorcanceled: matchAppliedorcanceled});
 });
+
+app.get("/termsandconditions", function(req,res){
+  res.render("termsandcondition")
+})
 
 // SIGNUP PAGE PACKEND
 
@@ -248,6 +252,11 @@ app.post("/login", async function (req, res) {
     }
   });
 });
+
+app.get('/logout', async function(req,res){
+    res.cookie("token", "");
+    res.redirect("login");
+})
 
 app.get('/playerdetails',isLoggedIn, async function(req,res){
   const player = await playerModel.findOne({FFID: req.player.FFID});
@@ -349,8 +358,9 @@ app.post('/playerdetails', isLoggedIn, async function(req,res){
 
 
 function isLoggedIn(req, res, next) {
-  if (req.cookies.token === "") {
-    res.redirect("/signup");
+  let token = req.cookies.token;
+  if (token === "") {
+    res.redirect("/login");
   } else {
     const data = jwt.verify(req.cookies.token, "freefirebet");
     req.player = data;

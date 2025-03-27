@@ -23,6 +23,8 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    position: sticky;
+    top: 0px;
 }
 .main-container .ff-bet a{
     text-decoration: none;

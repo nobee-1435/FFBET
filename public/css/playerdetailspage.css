@@ -8,24 +8,25 @@ body{
     display: flex;
     flex-direction: column;
     gap: 25px;
-    justify-content: center;
-    align-items: center;
+    justify-content: start;
+    align-items: start;
     margin-top: 10px;
     font-size: 20px;
+    padding-left: 20px;
+
 }
 .main-container div{
     display: flex;
     flex-direction: column;
     gap: 20px;
     position: relative;
-    top: 50px;
 }
+
 .main-container div p{
-    border: 1px solid black;
-    padding: 5px;
+    color: #a32929;
 }
 .main-container div label{
     color: blue;
-    position: relative;
-    top: 20px;
 }
+
+
