@@ -34,6 +34,11 @@ app.use(session({
   saveUninitialized: true
 }));
 
+let isAuthenticated = false;
+const authMiddleware = (req, res, next) => {
+  res.set("Cache-Control", "no-store");
+  next();
+};
 
 //forpersonal
 app.get("/ffbetcreatematchmyself",isLoggedIn,async function (req, res) {
@@ -140,7 +145,8 @@ app.get("/", function (req, res) {
   res.render("logopage", { token });
 });
 
-app.get("/home",isLoggedIn,async function (req, res) {
+
+app.get("/home", async function (req, res) {
  
   let mainMatchContainer = await mainMatchContainerModel.find().populate({
     path: 'matchFullDetails',
@@ -151,20 +157,33 @@ app.get("/home",isLoggedIn,async function (req, res) {
   });
   const matchAppliedorcanceled = req.session.matchAppliedorcanceled;
   req.session.matchAppliedorcanceled = null;
+ let token = req.cookies.token;
+ if(token === ""){
+  res.redirect('/login')
+ }else{
+  const data = jwt.verify(req.cookies.token, "freefirebet");
+  req.player = data;
 
-  const player = await playerModel.findOne({ FFID: req.player.FFID });
+  const player = await playerModel.findOne({FFID: req.player.FFID});
   let playerFFID = player.FFID;
+
   
-  const filteredMatches = mainMatchContainer.map(container => {
-      container.matchFullDetails = container.matchFullDetails.map(match => {
-          match.showRoomDetails = match.selectedPlayerList.some(player => player.playerId === String(playerFFID));
-          return match;
-      });
-      return container;
-  });
-  
-  res.render("home", { mainMatchContainer: filteredMatches,player,matchAppliedorcanceled: matchAppliedorcanceled});
-});
+
+    const filteredMatches = mainMatchContainer.map(container => {
+        container.matchFullDetails = container.matchFullDetails.map(match => {
+            match.showRoomDetails = match.selectedPlayerList.some(player => player.playerId === String(playerFFID));
+            return match;
+        });
+        return container;
+    });
+    
+    res.render("home", { mainMatchContainer: filteredMatches,player,matchAppliedorcanceled: matchAppliedorcanceled});
+  }
+
+ }
+ 
+ 
+);
 
 app.get("/termsandconditions", function(req,res){
   res.render("termsandcondition")
@@ -220,12 +239,15 @@ app.post("/signup", async function (req, res) {
   });
 });
 
-app.get("/login", function (req, res) {
+app.get("/login",async function (req, res) {
+ 
+  
   res.render("login", { mobileError: null, FormData: {} });
 });
 
 app.post("/login", async function (req, res) {
   let { FFID, password } = req.body;
+
 
   let player = await playerModel.findOne({ FFID });
   if (!player) {
@@ -243,6 +265,7 @@ app.post("/login", async function (req, res) {
         maxAge: 1000 * 60 * 60 * 24 * 365 * 10,
         sameSite: "strict",
       });
+      isAuthenticated = true;
       res.redirect("home");
     } else {
       return res.render("login", {
@@ -255,11 +278,12 @@ app.post("/login", async function (req, res) {
 
 app.get('/logout', async function(req,res){
     res.cookie("token", "");
+  isAuthenticated = false;
     res.redirect("login");
 })
 
 app.get('/playerdetails',isLoggedIn, async function(req,res){
-  const player = await playerModel.findOne({FFID: req.player.FFID});
+  const player = await playerModel.findOne({ FFID: req.player.FFID });
  
   
   res.render('playerdetailspage', {player})
