@@ -75,11 +75,17 @@ app.post('/creatematchsmyself',isLoggedIn,async function(req,res){
 })
 
 app.get('/playerselectedpage',isLoggedIn, async function(req,res){
+  res.render('password');
+})
+app.post('/playerselectedpage',isLoggedIn, async function(req,res){
+  let {email,password} = req.body;
+  if(email ===  process.env.EMAILID && password === process.env.PASSWORD){
   let appliedPlayerList = await appliedPlayerListModel.find();
-  let matchFullDetails = await matchFullDetailsModel.find();
-  
-  
-  res.render('playerselectedpage', {appliedPlayerList});
+
+    res.render('playerselectedpage', {appliedPlayerList})
+  }else{
+    res.redirect('/playerselectedpage');
+  }
 })
 
 app.post('/playerSelect',isLoggedIn, async function(req,res){
@@ -104,7 +110,7 @@ app.post('/playerSelect',isLoggedIn, async function(req,res){
   await selectedPlayerList.save();
   matchFullDetails.selectedPlayerList.push(selectedPlayerList._id);
   await matchFullDetails.save();
-
+  return res.redirect('playerselectedpage');
 });
 app.post('/playerReject', async function(req,res){
 
@@ -134,8 +140,6 @@ app.post('/playerReject', async function(req,res){
   matchFullDetails.rejectedPlayerList.push(rejectedPlayerList._id);
   await matchFullDetails.save();
   return res.redirect('playerselectedpage');
-
-
 });
 
 
